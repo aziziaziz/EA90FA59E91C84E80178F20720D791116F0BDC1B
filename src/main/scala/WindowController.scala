@@ -10,41 +10,14 @@ import scalafx.scene.shape.Circle
 import scalafxml.core.macros.sfxml
 
 @sfxml
-class WindowController(
-                        private val server: TextField,
-                        private val port: TextField,
-                        private val status: Label,
-                        private val clientList: ListView[ActorRef],
-                        private val ball: Circle,
-                        private val btnPass: Button) {
-  MyPassBall.clients.onChange((x, y) => {
-    Platform.runLater {
-      clientList.items = new ObservableBuffer() ++= x.toList
-    }
-  })
+class WindowController() {
 
-  def hideBall(): Unit ={
-    ball.visible = false
-    btnPass.disable = true
-  }
-  def showBall(): Unit ={
-    ball.visible = true
-    btnPass.disable = false
-  }
-
-  def handleJoin(action: ActionEvent): Unit ={
-    //reference to client ref
-    MyPassBall.client ! SentJoin(server.text.value, port.text.value)
-  }
-
-  def handlePass(action: ActionEvent): Unit ={
-    MyPassBall.client ! PassBall
-  }
-
-  def handleStart(action: ActionEvent): Unit ={
-    MyPassBall.server ! Start
-  }
-  def displayStatus(data: String): Unit = {
-    status.text = data
+  def playCard(c: Card): Unit={
+    //if cant play card
+    //label = wtf m8
+    //else
+    //discard = card
+    //if special card
+    //do special stuff
   }
 }

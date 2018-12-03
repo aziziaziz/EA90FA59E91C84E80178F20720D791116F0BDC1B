@@ -2,7 +2,6 @@ import Client._
 import MyPassBall.system
 import Server.Join
 import akka.actor.{Actor, ActorRef}
-
 import scalafx.application.Platform
 import akka.pattern.ask
 import akka.remote.DisassociatedEvent
@@ -12,14 +11,19 @@ import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits._
 import scalafx.scene.control.Alert
 
+import scala.collection.mutable.ListBuffer
+
 class Client extends Actor {
   implicit val timeout = Timeout(10 second)
   context.system.eventStream.subscribe(self, classOf[akka.remote.DisassociatedEvent])
+  var hand : ListBuffer[Card]
 
   def receive = {
-    case Joined =>
+    case Joined(startHand) =>
       Platform.runLater {
-        MyPassBall.control.displayStatus("Client Has Joined")
+        for (x <- startHand){
+          hand += x
+        }
       }
       context.become(joined)
 
@@ -31,40 +35,27 @@ class Client extends Actor {
   }
   def joined : Receive = {
     case Begin(list) =>
-      Platform.runLater{
-        MyPassBall.control.hideBall()
-      }
-      joinList = Option(Iterator.continually(list.toList.filterNot(x=> x == self)).flatten)
       sender ! "Ready"
-    case Take =>
+    case Draw(c) =>
       Platform.runLater{
-        MyPassBall.control.showBall()
+        hand += c
       }
-      sender ! "Taken"
-    case PassBall=>
-      //pass to someone in the group
-      val cirlist = joinList.get.take(1).toList
-      for (x <- cirlist){
-        val result = x ? Take
-        result.foreach{x =>
-          MyPassBall.control.hideBall()
-        }
-      }
-    case DisassociatedEvent(localAddress, remoteAddress, _) =>
-      Platform.runLater {
-        MyPassBall.createAlert("Game finished due to Person left")
-      }
-      MyPassBall.control.showBall()
+      sender ! "Drawn"
+    case myTurn=>
 
-      context.unbecome()
     case _=>
   }
 }
 object Client {
   var joinList: Option[Iterator[ActorRef]] = None
-  case object Joined
+  case class Joined(startHand: List[Card])
   case class SentJoin(ip: String, port: String)
   case class Begin(clients: Iterable[ActorRef])
   case object Take
   case object PassBall
+  case class Draw(c : Card)
+  case object myTurn
+}
+
+case class Card (val colour: Char, val attribute: Char){
 }
