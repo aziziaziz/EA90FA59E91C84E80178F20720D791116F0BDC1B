@@ -16,7 +16,7 @@ import scalafx.scene.control.Alert.AlertType
 object MyPassBall extends JFXApp{
 
   val clients = new ObservableHashSet[ActorRef]()
-
+  // Asd
   var count = -1
   val addresses = (for (inf <- NetworkInterface.getNetworkInterfaces.asScala;
                         add <- inf.getInetAddresses.asScala) yield {
