@@ -1,0 +1,9 @@
+.DS_Store
+out/
+*.class
+
+.idea
+project/
+target/
+build.sbt
+src/test/
