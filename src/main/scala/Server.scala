@@ -12,6 +12,7 @@ class Server extends Actor{
   implicit val timeout: Timeout = Timeout(20 second)
   var clientIterator: Option[Iterator[ActorRef]] = None
   def receive = {
+    //test again
     case Join =>
       MyPassBall.clients += sender
       sender ! Joined
