@@ -17,6 +17,7 @@ object MyPassBall extends JFXApp{
 
   val clients = new ObservableHashSet[ActorRef]()
 
+
   var count = -1
   val addresses = (for (inf <- NetworkInterface.getNetworkInterfaces.asScala;
                         add <- inf.getInetAddresses.asScala) yield {
