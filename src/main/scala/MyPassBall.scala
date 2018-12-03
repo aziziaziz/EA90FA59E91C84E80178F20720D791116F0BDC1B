@@ -75,7 +75,7 @@ object MyPassBall extends JFXApp{
   val loader = new FXMLLoader(null, NoDependencyResolver)
   loader.load(resource)
 
-  val ui = loader.getRoot[javafx.scene.layout.BorderPane]
+  var ui = loader.getRoot[javafx.scene.layout.BorderPane]
   val control = loader.getController[WindowController#Controller]()
 
   stage = new PrimaryStage(){
@@ -83,6 +83,8 @@ object MyPassBall extends JFXApp{
       root = ui
     }
   }
+
+  stage.setResizable(false)
   stage.onCloseRequest = handle {
     system.terminate
   }
