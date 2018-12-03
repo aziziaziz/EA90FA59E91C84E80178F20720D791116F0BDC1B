@@ -1,0 +1,26 @@
+server: 
+	- join -> ! joined
+	- ready -> ! begin, give 7 cards
+	- nextTurn -> give card
+	- update pile
+
+client:
+	- join -> ? join
+	- ready -> ! ready
+	- nextTurn -> while (playcard){
+		      play card
+		      }
+		      if hand = 0
+		      win
+
+controller
+	- play card(card)
+		- if cant play 
+		- wrong card reeeeeee return false
+		- else special card
+		- do special stuff return true
+		- else normie card
+		- discard pile = card return true
+
+
+	
