@@ -5,5 +5,5 @@ out/
 .idea
 project/
 target/
-build.sbt
 src/test/
+build.sbt
