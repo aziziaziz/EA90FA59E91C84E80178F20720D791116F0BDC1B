@@ -20,6 +20,8 @@ object game extends JFXApp{
     a.add(new Card('x','t'))
   }
   val clients = new ObservableHashSet[ActorRef]()
+  val hosts = new ObservableHashSet[ActorRef]()
+
   // Asd
   var count = -1
   val addresses = (for (inf <- NetworkInterface.getNetworkInterfaces.asScala;
@@ -72,15 +74,19 @@ object game extends JFXApp{
   //create client actor
   val client = system.actorOf(Props[Client], "client")
 
-
-
-  val resource = getClass.getResourceAsStream("Window.fxml")
+  val resource = getClass.getResourceAsStream("MainWindow.fxml")
+  val windows2 = getClass.getResourceAsStream("Window.fxml")
 
   val loader = new FXMLLoader(null, NoDependencyResolver)
+  val loader2 = new FXMLLoader(null, NoDependencyResolver)
+
   loader.load(resource)
+  loader2.load(windows2)
 
   var ui = loader.getRoot[javafx.scene.layout.BorderPane]
-  val control = loader.getController[WindowController#Controller]()
+  var ui2 = loader2.getRoot[javafx.scene.layout.BorderPane]
+  val Micontrol = loader.getController[MainWindowController#Controller]()
+  val control = loader2.getController[WindowController#Controller]()
 
   stage = new PrimaryStage(){
     scene = new Scene(){
@@ -102,5 +108,18 @@ object game extends JFXApp{
     }.showAndWait()
   }
 
-}
+  def enterLobby(): Unit = {
+    stage = new PrimaryStage() {
+      scene = new Scene() {
+        root = ui2
+      }
+    }
+  }
 
+  def showUser(): Unit = {
+    println("HOST")
+    hosts.foreach(x=>println(x.toString()))
+    println("\nCLIENT")
+    clients.foreach(x=>println(x.toString()))
+  }
+}

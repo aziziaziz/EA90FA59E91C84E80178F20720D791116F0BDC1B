@@ -13,8 +13,15 @@ class Server extends Actor{
   implicit val timeout: Timeout = Timeout(20 second)
   var clientIterator: Option[Iterator[ActorRef]] = None
   def receive = {
-    case Join =>
-      sender ! Joined
+    case Join(some: String) =>
+      println("Server Receive: " + some)
+      if (some.equals("Host")) {
+        game.hosts += sender
+      } else {
+        game.clients += sender
+      }
+
+      sender ! Joined("asdsadsadasd")
     case Start =>
       context.become(started)
       for(x <- game.clients){
@@ -36,7 +43,7 @@ class Server extends Actor{
   }
 }
 object Server {
-  case object Join
+  case class Join(some: String)
   case object Start
 
 }

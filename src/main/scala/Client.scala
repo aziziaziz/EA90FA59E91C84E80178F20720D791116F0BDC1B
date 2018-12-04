@@ -1,53 +1,66 @@
-import Client._
+import Client.{HostGame, Joined, SentJoin}
 import Server.Join
 import akka.actor.{Actor, ActorRef}
-import akka.util.Timeout
 import scalafx.application.Platform
-import scalafx.collections.ObservableBuffer
+import akka.pattern.ask
+import akka.remote.DisassociatedEvent
+import akka.util.Timeout
 
-import scala.collection.mutable.ListBuffer
 import scala.concurrent.duration._
-/*
+import scala.concurrent.ExecutionContext.Implicits._
+import scalafx.scene.control.Alert
+
 class Client extends Actor {
   implicit val timeout = Timeout(10 second)
   context.system.eventStream.subscribe(self, classOf[akka.remote.DisassociatedEvent])
 
   def receive = {
-    case Joined =>
+    case Joined(some: String) =>
+      println("Client Joined")
+
       Platform.runLater {
+        //game.control.displayStatus(some + " Has Joined")
+        game.control.Statusu(some + " Has Joined")
+        game.showUser()
+
 
       }
-      context.become(joined)
+      //context.become(joined)
 
-    case SentJoin(ip, port) =>
+    case SentJoin(ip, port, status) =>
+      println("Client -------------" + ip + port + status)
       //sent join to server
       val serverRef = context.actorSelection(s"akka.tcp://ball@$ip:$port/user/server")
-      serverRef ! Join
+      serverRef ! Join(status)
+
     case _=>
   }
+  /*
   def joined : Receive = {
-    case Begin(starthand) =>
-      Platform.runLater{
-        for (x <- starthand){
-          hand += x
-        }
-      }
+    case Begin(list) =>
       sender ! "Ready"
-    case yourTurn(c) =>
+    case Draw(c) =>
       Platform.runLater{
         hand += c
       }
-    // sender ! play card
+      sender ! "Drawn"
+    case myTurn=>
+
     case _=>
   }
+  */
 }
 object Client {
   var joinList: Option[Iterator[ActorRef]] = None
-  var hand = new ObservableBuffer[Card]()
-  var playerName: String = ""
-  case class Joined()
-  case class SentJoin(ip: String, port: String)
-  case class Begin(starthand: ObservableBuffer[Card])
-  case class yourTurn(card: Card)
+  case class Joined(some: String)
+  case class SentJoin(ip: String, port: String, status: String)
+  //case class Joined(startHand: List[Card])
+  case class Begin(clients: Iterable[ActorRef])
+  case object Take
+  case object PassBall
+  case object HostGame
+  case class Draw(c : Card)
+  case object myTurn
+  case object yourTurn
 }
-*/
+
