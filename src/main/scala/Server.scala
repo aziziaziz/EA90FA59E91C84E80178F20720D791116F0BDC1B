@@ -1,4 +1,4 @@
-import Client.{Begin, Joined}
+import Client.{Begin, Joined, yourTurn}
 import Server.{Join, Start}
 import akka.actor.{Actor, ActorRef}
 import akka.pattern.ask
@@ -8,6 +8,7 @@ import scalafx.collections.ObservableBuffer
 import scala.concurrent.ExecutionContext.Implicits._
 import scala.concurrent.duration._
 import scala.concurrent.{Await, Future}
+
 class Server extends Actor{
   implicit val timeout: Timeout = Timeout(20 second)
   var clientIterator: Option[Iterator[ActorRef]] = None
@@ -24,7 +25,9 @@ class Server extends Actor{
       var order = for (x <- game.clients) yield { turn = turn + 1
         (x, turn)}
     //choose order
-    // sender ! yourTurn(Card)
+    // sender ? yourTurn(Card)
+      //
+
     case _=>
   }
   def started: Receive = {
@@ -35,5 +38,6 @@ class Server extends Actor{
 object Server {
   case object Join
   case object Start
+
 }
 

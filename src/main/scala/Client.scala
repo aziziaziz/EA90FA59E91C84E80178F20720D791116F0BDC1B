@@ -7,7 +7,7 @@ import scalafx.collections.ObservableBuffer
 
 import scala.collection.mutable.ListBuffer
 import scala.concurrent.duration._
-
+/*
 class Client extends Actor {
   implicit val timeout = Timeout(10 second)
   context.system.eventStream.subscribe(self, classOf[akka.remote.DisassociatedEvent])
@@ -38,15 +38,16 @@ class Client extends Actor {
         hand += c
       }
     // sender ! play card
-
     case _=>
   }
 }
 object Client {
   var joinList: Option[Iterator[ActorRef]] = None
   var hand = new ObservableBuffer[Card]()
+  var playerName: String = ""
   case class Joined()
   case class SentJoin(ip: String, port: String)
   case class Begin(starthand: ObservableBuffer[Card])
   case class yourTurn(card: Card)
 }
+*/
