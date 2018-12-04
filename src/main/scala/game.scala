@@ -2,19 +2,23 @@ import java.net.NetworkInterface
 
 import akka.actor.{ActorRef, ActorSystem, Props}
 import com.typesafe.config.ConfigFactory
-
 import scalafx.application.JFXApp
 import scalafx.application.JFXApp.PrimaryStage
 import scalafx.scene.Scene
 import scalafxml.core.{FXMLLoader, NoDependencyResolver}
 import scalafx.Includes._
+
 import scala.collection.JavaConverters._
-import scalafx.collections.ObservableHashSet
+import scalafx.collections.{ObservableBuffer, ObservableHashSet}
 import scalafx.scene.control.Alert
 import scalafx.scene.control.Alert.AlertType
 
-object MyPassBall extends JFXApp{
+object game extends JFXApp{
 
+  var a = new ObservableBuffer[Card]
+  for (x <- (0 to 108)){
+    a.add(new Card('x','t'))
+  }
   val clients = new ObservableHashSet[ActorRef]()
   // Asd
   var count = -1
@@ -99,3 +103,4 @@ object MyPassBall extends JFXApp{
   }
 
 }
+

@@ -1,29 +1,21 @@
 import Client._
-import MyPassBall.system
 import Server.Join
 import akka.actor.{Actor, ActorRef}
-import scalafx.application.Platform
-import akka.pattern.ask
-import akka.remote.DisassociatedEvent
 import akka.util.Timeout
-
-import scala.concurrent.duration._
-import scala.concurrent.ExecutionContext.Implicits._
-import scalafx.scene.control.Alert
+import scalafx.application.Platform
+import scalafx.collections.ObservableBuffer
 
 import scala.collection.mutable.ListBuffer
+import scala.concurrent.duration._
 
 class Client extends Actor {
   implicit val timeout = Timeout(10 second)
   context.system.eventStream.subscribe(self, classOf[akka.remote.DisassociatedEvent])
-  var hand : ListBuffer[Card]
 
   def receive = {
-    case Joined(startHand) =>
+    case Joined =>
       Platform.runLater {
-        for (x <- startHand){
-          hand += x
-        }
+
       }
       context.become(joined)
 
@@ -34,28 +26,27 @@ class Client extends Actor {
     case _=>
   }
   def joined : Receive = {
-    case Begin(list) =>
+    case Begin(starthand) =>
+      Platform.runLater{
+        for (x <- starthand){
+          hand += x
+        }
+      }
       sender ! "Ready"
-    case Draw(c) =>
+    case yourTurn(c) =>
       Platform.runLater{
         hand += c
       }
-      sender ! "Drawn"
-    case myTurn=>
+    // sender ! play card
 
     case _=>
   }
 }
 object Client {
   var joinList: Option[Iterator[ActorRef]] = None
-  case class Joined(startHand: List[Card])
+  var hand = new ObservableBuffer[Card]()
+  case class Joined()
   case class SentJoin(ip: String, port: String)
-  case class Begin(clients: Iterable[ActorRef])
-  case object Take
-  case object PassBall
-  case class Draw(c : Card)
-  case object myTurn
-}
-
-case class Card (val colour: Char, val attribute: Char){
+  case class Begin(starthand: ObservableBuffer[Card])
+  case class yourTurn(card: Card)
 }
