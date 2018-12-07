@@ -76,21 +76,27 @@ object game extends JFXApp{
 
   val resource = getClass.getResourceAsStream("MainWindow.fxml")
   val windows2 = getClass.getResourceAsStream("Window.fxml")
+  val testPlay = getClass.getResourceAsStream("PlayWindow.fxml")
 
   val loader = new FXMLLoader(null, NoDependencyResolver)
   val loader2 = new FXMLLoader(null, NoDependencyResolver)
+  val testPlayLoader = new FXMLLoader(null, NoDependencyResolver)
 
   loader.load(resource)
   loader2.load(windows2)
+  testPlayLoader.load(testPlay)
 
   var ui = loader.getRoot[javafx.scene.layout.BorderPane]
   var ui2 = loader2.getRoot[javafx.scene.layout.BorderPane]
+  var playUI = testPlayLoader.getRoot[javafx.scene.layout.BorderPane]
+
   val Micontrol = loader.getController[MainWindowController#Controller]()
   val control = loader2.getController[WindowController#Controller]()
+  val testPlayControl = testPlayLoader.getController[PlayWindowController#Controller]()
 
   stage = new PrimaryStage(){
     scene = new Scene(){
-      root = ui
+      root = playUI
     }
   }
 
