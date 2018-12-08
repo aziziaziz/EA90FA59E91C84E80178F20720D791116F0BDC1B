@@ -1,10 +1,11 @@
-import Client.{HostGame, Joined, SentJoin}
-import Server.Join
+import Client.{Update, _}
+import Server._
 import akka.actor.{Actor, ActorRef}
 import scalafx.application.Platform
 import akka.pattern.ask
 import akka.remote.DisassociatedEvent
 import akka.util.Timeout
+import scalafx.collections.ObservableBuffer
 
 import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits._
@@ -13,6 +14,8 @@ import scalafx.scene.control.Alert
 class Client extends Actor {
   implicit val timeout = Timeout(10 second)
   context.system.eventStream.subscribe(self, classOf[akka.remote.DisassociatedEvent])
+  var hand = new ObservableBuffer[String]()
+  var discardPile = ""
 
   def receive = {
     case Joined(some: String) =>
@@ -35,32 +38,67 @@ class Client extends Actor {
 
     case _=>
   }
-  /*
+
   def joined : Receive = {
-    case Begin(list) =>
-      sender ! "Ready"
-    case Draw(c) =>
+    case Draw(s) =>
       Platform.runLater{
-        hand += c
+        hand += s
       }
       sender ! "Drawn"
-    case myTurn=>
+    case Turn=>
+      Platform.runLater {
+        var x = true
+
+        //var play = card that was played
+        while (x){
+          /*
+        if(play.charAt(0).equals(discardPile.charAt(0)) || play.charAt(1).equals(discardPile.charAt(1)) || play.equals("cc") ||
+          play.equals("4+") || discardPile.equals("")){
+          if(play.charAt(1).toInt > 58 || play.charAt(1) == 43){
+            if(play.charAt(1).equals('r')){
+              sender() ! Reverse(play)
+            }else if (play.charAt(1).equals('s')){
+              sender() ! Skip(play)
+            }else if (play.charAt(1).equals('+')){
+               ! DrawMore(play)
+            } else{
+              sender() ! ChangeColour(play)
+            }
+            x = false
+          }else{
+            sender() ! Normal(play)
+          }
+        }else if (click draw button ){
+          sender() ! DrawMore("1+")
+          x = false
+        }else{
+          println("cant play this shit beetch")
+        }*/
+      }
+
+
+        if (hand.length == 0){
+          sender() ! Win
+        }
+      }
+    case UpdateField(discardPile) =>
+      Platform.runLater{
+      this.discardPile = discardPile
+    }
 
     case _=>
   }
-  */
+
 }
 object Client {
-  var joinList: Option[Iterator[ActorRef]] = None
+  val Name : String = "ssssss"
   case class Joined(some: String)
   case class SentJoin(ip: String, port: String, status: String)
-  //case class Joined(startHand: List[Card])
   case class Begin(clients: Iterable[ActorRef])
   case object Take
   case object PassBall
   case object HostGame
-  case class Draw(c : Card)
-  case object myTurn
-  case object yourTurn
+  case class Draw(s : String)
+  case object Win
 }
 
