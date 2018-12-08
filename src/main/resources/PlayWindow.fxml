@@ -6,13 +6,17 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="650.0" minWidth="800.0" prefHeight="650.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.181" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PlayWindowController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="680.0" minWidth="900.0" prefHeight="690.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.181" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PlayWindowController">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
@@ -37,23 +41,57 @@
    <center>
       <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <top>
-            <AnchorPane fx:id="player3_play_area" prefHeight="90.0" prefWidth="1200.0" BorderPane.alignment="CENTER">
+            <AnchorPane fx:id="player3_play_area" prefHeight="100.0" prefWidth="1200.0" BorderPane.alignment="CENTER">
                <children>
-                  <AnchorPane fx:id="player3_play_area_card" layoutX="491.0" layoutY="28.0" prefHeight="125.0" prefWidth="400.0" style="-fx-border-color: silver;" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="0.0">
+                  <AnchorPane fx:id="player3_play_area_card" layoutX="491.0" layoutY="15.0" prefHeight="140.0" prefWidth="400.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <FlowPane fx:id="player3_play_area_card_flow" layoutX="95.0" layoutY="-37.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <VBox layoutX="1.0" layoutY="7.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                           <children>
+                              <HBox alignment="CENTER">
+                                 <children>
+                                    <Label text="Player 3 - " />
+                                    <Label text="10" />
+                                 </children>
+                              </HBox>
+                              <ScrollPane hbarPolicy="NEVER" prefHeight="125.0" vbarPolicy="NEVER">
+                                 <content>
+                                    <HBox fx:id="player3_play_area_card_flow" alignment="TOP_RIGHT" prefHeight="124.0" prefWidth="486.0" />
+                                 </content>
+                              </ScrollPane>
+                           </children>
+                        </VBox>
                      </children>
+                     <padding>
+                        <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+                     </padding>
                   </AnchorPane>
                </children>
                <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="11.0" />
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
             </AnchorPane>
          </top>
          <left>
             <AnchorPane fx:id="player4_play_area" BorderPane.alignment="CENTER">
                <children>
-                  <AnchorPane fx:id="player4_play_area_card" layoutX="15.0" layoutY="15.0" prefHeight="200.0" prefWidth="150.0" style="-fx-border-color: silver;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <AnchorPane fx:id="player4_play_area_card" layoutX="22.0" layoutY="10.0" prefHeight="200.0" prefWidth="150.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <HBox alignment="CENTER">
+                                 <children>
+                                    <Label text="Player 4 - " />
+                                    <Label text="12" />
+                                 </children>
+                              </HBox>
+                              <ScrollPane hbarPolicy="NEVER" prefHeight="383.0" prefWidth="150.0" vbarPolicy="NEVER">
+                                 <content>
+                                    <VBox fx:id="player4_play_area_card_flow" alignment="TOP_CENTER" nodeOrientation="RIGHT_TO_LEFT" prefHeight="327.0" prefWidth="147.0" />
+                                 </content>
+                              </ScrollPane>
+                           </children>
+                        </VBox>
+                     </children></AnchorPane>
                </children>
                <padding>
                   <Insets bottom="5.0" left="11.0" right="5.0" top="5.0" />
@@ -69,7 +107,28 @@
                   <Insets bottom="5.0" left="5.0" right="11.0" top="5.0" />
                </padding>
                <children>
-                  <AnchorPane fx:id="player2_play_area_card" layoutY="10.0" prefHeight="200.0" prefWidth="150.0" style="-fx-border-color: silver;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <AnchorPane fx:id="player2_play_area_card" layoutY="10.0" prefHeight="200.0" prefWidth="150.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <HBox alignment="CENTER">
+                                 <children>
+                                    <Label text="Player 2 - " />
+                                    <Label text="20" />
+                                 </children>
+                              </HBox>
+                              <ScrollPane fx:id="player2_scroll" hbarPolicy="NEVER" prefHeight="388.0" prefWidth="150.0" vbarPolicy="NEVER">
+                                 <content>
+                                    <HBox>
+                                       <children>
+                                          <VBox fx:id="player2_play_area_card_flow" alignment="BOTTOM_CENTER" nodeOrientation="LEFT_TO_RIGHT" prefHeight="325.0" prefWidth="147.0" spacing="12.0" />
+                                       </children>
+                                    </HBox>
+                                 </content>
+                              </ScrollPane>
+                           </children>
+                        </VBox>
+                     </children></AnchorPane>
                </children>
                <BorderPane.margin>
                   <Insets left="34.0" />
@@ -77,40 +136,116 @@
             </AnchorPane>
          </right>
          <bottom>
-            <AnchorPane fx:id="player1_play_area" prefHeight="90.0" prefWidth="1200.0" BorderPane.alignment="CENTER">
+            <AnchorPane fx:id="player1_play_area" prefHeight="100.0" prefWidth="1200.0" BorderPane.alignment="CENTER">
                <padding>
-                  <Insets bottom="11.0" left="5.0" right="5.0" top="5.0" />
+                  <Insets left="5.0" right="5.0" top="5.0" />
                </padding>
                <children>
-                  <AnchorPane fx:id="player1_play_area_card" layoutX="215.0" prefHeight="109.0" prefWidth="385.0" style="-fx-border-color: none;" AnchorPane.bottomAnchor="21.0" AnchorPane.leftAnchor="210.0" AnchorPane.rightAnchor="205.0">
+                  <AnchorPane fx:id="player1_play_area_card" layoutX="160.0" layoutY="10.0" prefHeight="144.0" prefWidth="544.0" style="-fx-border-color: none;" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="5.0">
                      <padding>
                         <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                      </padding>
                      <children>
-                        <FlowPane layoutX="81.0" layoutY="-45.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <VBox layoutX="1.0" layoutY="1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <ScrollPane fx:id="player1_scroll" vbarPolicy="NEVER" VBox.vgrow="NEVER">
+                                 <content>
+                                    <HBox fx:id="player1_play_area_card_flow" prefHeight="123.0" prefWidth="486.0" />
+                                 </content>
+                              </ScrollPane>
+                              <HBox alignment="CENTER">
+                                 <children>
+                                    <Label text="Player 1 - " />
+                                    <Label text="5" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
                      </children>
                   </AnchorPane>
                </children>
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
             </AnchorPane>
          </bottom>
          <center>
-            <AnchorPane prefHeight="343.0" prefWidth="397.0" BorderPane.alignment="CENTER">
+            <AnchorPane prefHeight="343.0" prefWidth="397.0" style="-fx-border-color: silver; -fx-border-radius: 3;" BorderPane.alignment="CENTER">
                <children>
-                  <AnchorPane fx:id="draw_pile" layoutX="14.0" layoutY="72.0" prefHeight="216.0" prefWidth="170.0" style="-fx-border-color: silver; -fx-border-radius: 5;" AnchorPane.leftAnchor="6.0" AnchorPane.topAnchor="50.0" />
-                  <AnchorPane layoutX="206.0" layoutY="70.0" prefHeight="216.0" prefWidth="170.0" style="-fx-border-color: silver; -fx-border-radius: 5;" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="50.0" />
-                  <Label fx:id="tert" layoutX="64.0" layoutY="266.0" text="Draw Pile">
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="pert" layoutX="276.0" layoutY="266.0" text="Discard Pile">
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font>
-                  </Label>
-                  <Button fx:id="add_cards" layoutX="164.0" layoutY="283.0" mnemonicParsing="false" onAction="#userAddCard" text="Add Cards" />
-                  <Label fx:id="pp" layoutX="14.0" layoutY="14.0" text="Label" />
+                  <HBox alignment="CENTER" layoutX="7.0" layoutY="51.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                     <children>
+                        <AnchorPane fx:id="draw_pile" prefHeight="216.0" prefWidth="170.0">
+                           <children>
+                              <Pane fx:id="draw_pile" layoutX="28.0" layoutY="28.0" prefHeight="162.0" prefWidth="115.0" style="-fx-border-color: silver; -fx-border-radius: 5;" AnchorPane.leftAnchor="28.0" AnchorPane.topAnchor="28.0">
+                                 <children>
+                                    <ImageView layoutX="4.0" layoutY="4.0">
+                                       <image>
+                                          <Image url="@cards/ub.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </Pane>
+                              <HBox alignment="CENTER" layoutX="70.0" layoutY="195.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                 <children>
+                                    <Label fx:id="tert" text="Draw Pile">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="216.0" prefWidth="170.0">
+                           <children>
+                              <Pane fx:id="discard_pile" layoutX="28.0" layoutY="28.0" prefHeight="162.0" prefWidth="115.0" style="-fx-border-color: silver; -fx-border-radius: 5;">
+                                 <children>
+                                    <ImageView fx:id="discard_pile_image" fitHeight="160.0" fitWidth="114.0" layoutX="1.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true" />
+                                 </children>
+                              </Pane>
+                              <HBox alignment="CENTER" layoutX="54.0" layoutY="193.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                 <children>
+                                    <Label fx:id="pert" text="Discard Pile">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </HBox>
+                  <Button fx:id="add_cards" layoutX="14.0" layoutY="314.0" mnemonicParsing="false" onAction="#userAddCard" text="Add Cards" />
+                  <HBox alignment="CENTER" layoutX="179.0" layoutY="43.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                     <children>
+                        <Label fx:id="pp" text="Player 1 played wild card, color Red" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" layoutX="2.0" layoutY="5.0" prefHeight="26.0" prefWidth="384.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0">
+                     <children>
+                        <Label text="Player 1 Turn" textFill="#000000cd">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox fx:id="hboxed" alignment="CENTER" layoutX="158.0" layoutY="276.0" spacing="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                     <children>
+                        <Label text="Current color:" />
+                        <Label text="RED" textFill="RED" />
+                     </children>
+                  </HBox>
+                  <Label layoutX="14.0" layoutY="293.0" text="Test Buttons" />
+                  <Button fx:id="dummy_cards" layoutX="98.0" layoutY="314.0" mnemonicParsing="false" onAction="#addDummy" text="Add dummy cards" />
+                  <Button layoutX="216.0" layoutY="314.0" mnemonicParsing="false" text="Disable" />
+                  <Button fx:id="btrs" layoutX="279.0" layoutY="314.0" mnemonicParsing="false" onAction="#btr" text="Remove dummy" />
+                  <Button layoutX="391.0" layoutY="314.0" mnemonicParsing="false" onAction="#turn" text="Player 2's Turn" />
                </children>
+               <BorderPane.margin>
+                  <Insets bottom="7.0" left="7.0" right="7.0" top="7.0" />
+               </BorderPane.margin>
             </AnchorPane>
          </center>
       </BorderPane>
