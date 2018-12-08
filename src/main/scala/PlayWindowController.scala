@@ -1,6 +1,6 @@
-import javafx.fxml.Initializable
-import scalafx.animation.TranslateTransition
-import scalafx.geometry.Orientation
+import java.net.URL
+import java.util.ResourceBundle
+
 import scalafx.scene.Group
 import scalafx.scene.control.{Button, Label, ScrollPane}
 import scalafx.scene.image.{Image, ImageView}
@@ -35,7 +35,9 @@ class PlayWindowController (
                             hboxed: HBox,
                             btrs: Button,
                             player2_scroll: ScrollPane,
-                            player1_scroll: ScrollPane
+                            player1_scroll: ScrollPane,
+                            new_game: HBox,
+                            deck_view: AnchorPane
                           ) {
   var cardTemplate: Pane =_
   var imageTemplate: ImageView =_
@@ -43,7 +45,59 @@ class PlayWindowController (
   val lrt: Array[Group] = new Array[Group](15)
 
   def init(): Unit = {
+    new_game.visible = false
+    new_game.disable = true
 
+    deck_view.visible = true
+
+    player1_scroll.setStyle("-fx-focus-color: transparent;")
+    addDummy()
+
+    for(i <- 1 to 10) {
+      val ran = Random.nextInt(10)
+      val c = Array("b", "g", "r", "y")
+      val d = Random.nextInt(4)
+      val e = c(d)
+
+      var cardGroup: Group = new Group()
+
+      cardTemplate = new Pane {
+        prefHeight = 120.0
+        prefWidth = 74
+        style = "-fx-border-color: silver; -fx-border-radius: 5;"
+      }
+
+      imageTemplate = new ImageView {
+        fitHeight = 118.0
+        fitWidth = 72.0
+        layoutX = 1.0
+        layoutY = 1.0
+      }
+
+      imageTemplate.image = new Image(s"cards/$e$ran.png")
+
+      cardGroup.getChildren.add(cardTemplate)
+      cardGroup.getChildren.add(imageTemplate)
+      cardGroup.id = s"$e$ran"
+
+      cardGroup.onMouseEntered = { _ =>
+        cardGroup.translateY = -18
+      }
+
+      cardGroup.onMouseExited = { _ =>
+        cardGroup.translateY = 0
+      }
+
+      cardGroup.onMouseClicked = { _ =>
+        player1_play_area_card_flow.getChildren.remove(cardGroup)
+        pert.text = cardGroup.getId.toString
+        discardCard(cardGroup.getId.toString)
+      }
+
+      player1_play_area_card_flow.spacing = -40
+      player1_play_area_card_flow.getChildren.add(cardGroup)
+      tert.text = player3_play_area_card_flow.getChildren.size().toString
+    }
   }
 
   def btr(): Unit = {
@@ -75,7 +129,7 @@ class PlayWindowController (
       layoutY = 1.0
     }
 
-    imageTemplate.image = (new Image(s"cards/$e$ran.png"))
+    imageTemplate.image = new Image(s"cards/$e$ran.png")
 
     cardGroup.getChildren.add(cardTemplate)
     cardGroup.getChildren.add(imageTemplate)
@@ -126,7 +180,7 @@ class PlayWindowController (
   }
 
   def discardCard(some: String): Unit = {
-    discard_pile_image.image = (new Image(s"cards/$some.png"))
+    discard_pile_image.image = new Image(s"cards/$some.png")
   }
 
   def turn(): Unit = {
@@ -150,7 +204,7 @@ class PlayWindowController (
         layoutY = 1.0
       }
 
-      imV.image = (new Image(s"cards/ub.png"))
+      imV.image = new Image(s"cards/ub.png")
 
       temp.getChildren.add(tempP)
       temp.getChildren.add(imV)
@@ -175,7 +229,7 @@ class PlayWindowController (
         layoutY = 1.0
       }
 
-      imV.image = (new Image(s"cards/ub.png"))
+      imV.image = new Image(s"cards/ub.png")
 
       temp.getChildren.add(tempP)
       temp.getChildren.add(imV)

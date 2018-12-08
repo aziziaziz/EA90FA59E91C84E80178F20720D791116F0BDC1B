@@ -172,76 +172,89 @@
          <center>
             <AnchorPane prefHeight="343.0" prefWidth="397.0" style="-fx-border-color: silver; -fx-border-radius: 3;" BorderPane.alignment="CENTER">
                <children>
-                  <HBox alignment="CENTER" layoutX="7.0" layoutY="51.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                  <AnchorPane fx:id="deck_view" layoutX="1.0" layoutY="5.0" visible="false">
                      <children>
-                        <AnchorPane fx:id="draw_pile" prefHeight="216.0" prefWidth="170.0">
+                        <HBox alignment="CENTER" layoutY="46.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                            <children>
-                              <Pane fx:id="draw_pile" layoutX="28.0" layoutY="28.0" prefHeight="162.0" prefWidth="115.0" style="-fx-border-color: silver; -fx-border-radius: 5;" AnchorPane.leftAnchor="28.0" AnchorPane.topAnchor="28.0">
+                              <AnchorPane fx:id="draw_pile" prefHeight="216.0" prefWidth="170.0">
                                  <children>
-                                    <ImageView layoutX="4.0" layoutY="4.0">
-                                       <image>
-                                          <Image url="@cards/ub.png" />
-                                       </image>
-                                    </ImageView>
+                                    <Pane fx:id="draw_pile" layoutX="28.0" layoutY="28.0" prefHeight="162.0" prefWidth="115.0" style="-fx-border-color: silver; -fx-border-radius: 5;" AnchorPane.leftAnchor="28.0" AnchorPane.topAnchor="28.0">
+                                       <children>
+                                          <ImageView layoutX="4.0" layoutY="4.0">
+                                             <image>
+                                                <Image url="@cards/ub.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </Pane>
+                                    <HBox alignment="CENTER" layoutX="70.0" layoutY="195.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                       <children>
+                                          <Label fx:id="tert" text="Draw Pile">
+                                             <font>
+                                                <Font name="System Bold" size="12.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
                                  </children>
-                              </Pane>
-                              <HBox alignment="CENTER" layoutX="70.0" layoutY="195.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                              </AnchorPane>
+                              <AnchorPane prefHeight="216.0" prefWidth="170.0">
                                  <children>
-                                    <Label fx:id="tert" text="Draw Pile">
-                                       <font>
-                                          <Font name="System Bold" size="12.0" />
-                                       </font>
-                                    </Label>
+                                    <Pane fx:id="discard_pile" layoutX="28.0" layoutY="28.0" prefHeight="162.0" prefWidth="115.0" style="-fx-border-color: silver; -fx-border-radius: 5;">
+                                       <children>
+                                          <ImageView fx:id="discard_pile_image" fitHeight="160.0" fitWidth="114.0" layoutX="1.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true" />
+                                       </children>
+                                    </Pane>
+                                    <HBox alignment="CENTER" layoutX="54.0" layoutY="193.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                       <children>
+                                          <Label fx:id="pert" text="Discard Pile">
+                                             <font>
+                                                <Font name="System Bold" size="12.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
                                  </children>
-                              </HBox>
+                              </AnchorPane>
                            </children>
-                        </AnchorPane>
-                        <AnchorPane prefHeight="216.0" prefWidth="170.0">
+                        </HBox>
+                        <Button fx:id="add_cards" layoutX="13.0" layoutY="309.0" mnemonicParsing="false" onAction="#userAddCard" text="Add Cards" />
+                        <HBox alignment="CENTER" layoutY="38.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                            <children>
-                              <Pane fx:id="discard_pile" layoutX="28.0" layoutY="28.0" prefHeight="162.0" prefWidth="115.0" style="-fx-border-color: silver; -fx-border-radius: 5;">
-                                 <children>
-                                    <ImageView fx:id="discard_pile_image" fitHeight="160.0" fitWidth="114.0" layoutX="1.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true" />
-                                 </children>
-                              </Pane>
-                              <HBox alignment="CENTER" layoutX="54.0" layoutY="193.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-                                 <children>
-                                    <Label fx:id="pert" text="Discard Pile">
-                                       <font>
-                                          <Font name="System Bold" size="12.0" />
-                                       </font>
-                                    </Label>
-                                 </children>
-                              </HBox>
+                              <Label fx:id="pp" text="Player 1 played wild card, color Red" />
                            </children>
-                        </AnchorPane>
+                        </HBox>
+                        <HBox alignment="CENTER" layoutX="1.0" prefHeight="26.0" prefWidth="384.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                           <children>
+                              <Label text="Player 1 Turn" textFill="#000000cd">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox fx:id="hboxed" alignment="CENTER" layoutY="271.0" spacing="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                           <children>
+                              <Label text="Current color:" />
+                              <Label text="RED" textFill="RED" />
+                           </children>
+                        </HBox>
+                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="13.0" layoutY="288.0" text="Test Buttons" />
+                        <Button fx:id="dummy_cards" layoutX="97.0" layoutY="309.0" mnemonicParsing="false" onAction="#addDummy" text="Add dummy cards" />
+                        <Button layoutX="215.0" layoutY="309.0" mnemonicParsing="false" text="Disable" />
+                        <Button fx:id="btrs" layoutX="278.0" layoutY="309.0" mnemonicParsing="false" onAction="#btr" text="Remove dummy" />
+                        <Button layoutX="390.0" layoutY="309.0" mnemonicParsing="false" onAction="#turn" text="Player 2's Turn" />
                      </children>
-                  </HBox>
-                  <Button fx:id="add_cards" layoutX="14.0" layoutY="314.0" mnemonicParsing="false" onAction="#userAddCard" text="Add Cards" />
-                  <HBox alignment="CENTER" layoutX="179.0" layoutY="43.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                  </AnchorPane>
+                  <HBox fx:id="new_game" alignment="CENTER" layoutX="205.0" layoutY="159.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <Label fx:id="pp" text="Player 1 played wild card, color Red" />
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER" layoutX="2.0" layoutY="5.0" prefHeight="26.0" prefWidth="384.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0">
-                     <children>
-                        <Label text="Player 1 Turn" textFill="#000000cd">
+                        <Button mnemonicParsing="false" onAction="#init" prefHeight="100.0" prefWidth="200.0" text="New Game">
                            <font>
-                              <Font name="System Bold" size="14.0" />
+                              <Font name="System Bold" size="13.0" />
                            </font>
-                        </Label>
+                        </Button>
                      </children>
                   </HBox>
-                  <HBox fx:id="hboxed" alignment="CENTER" layoutX="158.0" layoutY="276.0" spacing="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-                     <children>
-                        <Label text="Current color:" />
-                        <Label text="RED" textFill="RED" />
-                     </children>
-                  </HBox>
-                  <Label layoutX="14.0" layoutY="293.0" text="Test Buttons" />
-                  <Button fx:id="dummy_cards" layoutX="98.0" layoutY="314.0" mnemonicParsing="false" onAction="#addDummy" text="Add dummy cards" />
-                  <Button layoutX="216.0" layoutY="314.0" mnemonicParsing="false" text="Disable" />
-                  <Button fx:id="btrs" layoutX="279.0" layoutY="314.0" mnemonicParsing="false" onAction="#btr" text="Remove dummy" />
-                  <Button layoutX="391.0" layoutY="314.0" mnemonicParsing="false" onAction="#turn" text="Player 2's Turn" />
                </children>
                <BorderPane.margin>
                   <Insets bottom="7.0" left="7.0" right="7.0" top="7.0" />

@@ -115,10 +115,8 @@ object game extends JFXApp{
   }
 
   def enterLobby(): Unit = {
-    stage = new PrimaryStage() {
-      scene = new Scene() {
-        root = ui2
-      }
+    stage.scene = new Scene() {
+      root = ui2
     }
   }
 
