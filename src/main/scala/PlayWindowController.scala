@@ -44,6 +44,20 @@ class PlayWindowController (
   var originPoint = 0
   val lrt: Array[Group] = new Array[Group](15)
 
+  /*
+  init() - setting up the whole game, add cards to user hand setting up the initial discard pile card
+  victoryCondition() - checks everytime usser plays a card, if hand == 0 then win and broadcast win condition
+                       to server
+  loosingCondition() - same as before, checks everytime user draws a card or being forced to draw cards, hand > 15 loose
+  userAddCard() - function is run when user draw a card from the draw deck or being forced to draw cards
+  discardCard() - user plays card into discard pile
+  turn() - ends turn when user plays card, disable user hand
+  addDummy() - add cards to other players hand
+
+  to be implemented
+  Skip and reverse
+   */
+
   def init(): Unit = {
     new_game.visible = false
     new_game.disable = true
@@ -98,6 +112,14 @@ class PlayWindowController (
       player1_play_area_card_flow.getChildren.add(cardGroup)
       tert.text = player3_play_area_card_flow.getChildren.size().toString
     }
+  }
+
+  def victoryCondition(): Unit = {
+
+  }
+
+  def loosingCondition(): Unit = {
+
   }
 
   def btr(): Unit = {
