@@ -1,6 +1,3 @@
-import java.net.URL
-import java.util.ResourceBundle
-
 import scalafx.scene.Group
 import scalafx.scene.control.{Button, Label, ScrollPane}
 import scalafx.scene.image.{Image, ImageView}
@@ -9,6 +6,7 @@ import scalafxml.core.macros.sfxml
 
 import scala.util.Random
 import scalafx.Includes._
+import scalafx.scene.effect.ColorAdjust
 
 @sfxml
 class PlayWindowController (
@@ -35,14 +33,13 @@ class PlayWindowController (
                             hboxed: HBox,
                             btrs: Button,
                             player2_scroll: ScrollPane,
-                            player1_scroll: ScrollPane,
-                            new_game: HBox,
-                            deck_view: AnchorPane
+                            player1_scroll: ScrollPane
                           ) {
   var cardTemplate: Pane =_
   var imageTemplate: ImageView =_
   var originPoint = 0
   val lrt: Array[Group] = new Array[Group](15)
+  val colorAdjust: ColorAdjust = new ColorAdjust()
 
   /*
   init() - setting up the whole game, add cards to user hand setting up the initial discard pile card
@@ -59,12 +56,7 @@ class PlayWindowController (
    */
 
   def init(): Unit = {
-    new_game.visible = false
-    new_game.disable = true
-
-    deck_view.visible = true
-
-    player1_scroll.setStyle("-fx-focus-color: transparent;")
+    player1_scroll.setStyle("-fx-focus-color: transparent; -fx-background-color:transparent;")
     addDummy()
 
     for(i <- 1 to 10) {
@@ -112,7 +104,10 @@ class PlayWindowController (
       player1_play_area_card_flow.getChildren.add(cardGroup)
       tert.text = player3_play_area_card_flow.getChildren.size().toString
     }
+    limitCards()
   }
+
+  init()
 
   def victoryCondition(): Unit = {
 
@@ -210,6 +205,26 @@ class PlayWindowController (
     player2_scroll.setStyle("-fx-border-color: yellow;")
   }
 
+  def resetContrast(): Unit = {
+    colorAdjust.setContrast(0)
+    //colorAdjust.setContrast(0)
+    player1_play_area_card_flow.getChildren.forEach(child => {
+      child.disable = false
+      child.setEffect(colorAdjust)
+    })
+  }
+
+  def limitCards(): Unit = {
+    colorAdjust.setContrast(-0.5)
+    //colorAdjust.setContrast(0)
+    player1_play_area_card_flow.getChildren.forEach(child => {
+      if(!child.getId.equals("r4")) {
+        child.disable = true
+        child.setEffect(colorAdjust)
+      }
+    })
+  }
+
   def addDummy(): Unit = {
     for(i <- 1 to 10) {
       var temp = new Group()
@@ -294,5 +309,4 @@ class PlayWindowController (
     }
   }
   */
-
 }

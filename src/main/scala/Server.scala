@@ -3,6 +3,7 @@ import Server.{Join, Start}
 import akka.actor.{Actor, ActorRef}
 import akka.pattern.ask
 import akka.util.Timeout
+import scalafx.application.Platform
 import scalafx.collections.ObservableBuffer
 
 import scala.concurrent.ExecutionContext.Implicits._
@@ -15,10 +16,14 @@ class Server extends Actor{
   def receive = {
     case Join(some: String) =>
       println("Server Receive: " + some)
-      if (some.equals("Host")) {
-        game.hosts += sender
-      } else {
+      if (some.equals("CLIENT")) {
         game.clients += sender
+        Platform.runLater {
+          //game.control.displayStatus(some + " Has Joined")
+          game.lobbyWindowControl.updateList()
+        }
+      } else {
+        game.hosts += sender
       }
 
       sender ! Joined("asdsadsadasd")
@@ -45,6 +50,5 @@ class Server extends Actor{
 object Server {
   case class Join(some: String)
   case object Start
-
 }
 

@@ -4,6 +4,7 @@ import scala.util.Random
 
 
 object test extends App {
+  /*
       //server side
       //deck creation
       var deck = new ObservableBuffer[String]()
@@ -107,6 +108,6 @@ object test extends App {
       }
 
       //if hand = 0 then win
-
+*/
 }
 

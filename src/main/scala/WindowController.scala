@@ -53,7 +53,7 @@ class WindowController(
 
   def handleJoin(action: ActionEvent): Unit ={
     //reference to client ref
-    game.client ! SentJoin(server.text.value, port.text.value, "")
+    game.client ! SentJoin(server.text.value, port.text.value, "", "")
   }
 
   def handlePass(action: ActionEvent): Unit ={

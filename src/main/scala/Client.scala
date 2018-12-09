@@ -22,16 +22,14 @@ class Client extends Actor {
         //game.control.displayStatus(some + " Has Joined")
         game.control.Statusu(some + " Has Joined")
         game.showUser()
-
-
       }
       //context.become(joined)
 
-    case SentJoin(ip, port, status) =>
-      println("Client -------------" + ip + port + status)
+    case SentJoin(ip, port, name, types) =>
+      println("Client, ip: " + ip + ", port: " + port + ", status: " + name)
       //sent join to server
-      val serverRef = context.actorSelection(s"akka.tcp://ball@$ip:$port/user/server")
-      serverRef ! Join(status)
+      val serverRef = context.actorSelection(s"akka.tcp://$name@$ip:$port/user/server")
+      serverRef ! Join(types)
 
     case _=>
   }
@@ -53,7 +51,7 @@ class Client extends Actor {
 object Client {
   var joinList: Option[Iterator[ActorRef]] = None
   case class Joined(some: String)
-  case class SentJoin(ip: String, port: String, status: String)
+  case class SentJoin(ip: String, port: String, status: String, types: String)
   //case class Joined(startHand: List[Card])
   case class Begin(clients: Iterable[ActorRef])
   case object Take
