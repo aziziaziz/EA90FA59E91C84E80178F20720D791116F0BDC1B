@@ -57,7 +57,7 @@ object game extends JFXApp{
     //create server actor
     server = system.actorOf(Props[Server], "server")
     //create client actor
-    client = system.actorOf(Props[Client], "client")
+    client = system.actorOf(Props[Client], "DickWeed")
   }
 
   // Akka
