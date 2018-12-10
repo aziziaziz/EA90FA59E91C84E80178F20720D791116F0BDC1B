@@ -16,20 +16,10 @@ class Server extends Actor{
   def receive = {
     case Join(some: String) =>
       game.clients += sender
-      //println("---------------------------Total number of clients: " + game.clients.size)
-      //Server.players += sender
+      sender ! Joined
 
-      //sender ! UpdateList(game.clients)
-      //sender ! Play("Sending from server")
-      /*
-      Platform.runLater {
-        //game.control.displayStatus(some + " Has Joined")
-        game.lobbyWindowControl.updateList()
-      }
-      */
-      for (l <- game.clients) {
-        sender ! Play(l)
-      }
+    case sendList =>
+      sender ! UpdateList(game.clients)
 
     case Start =>
       context.become(started)
@@ -88,6 +78,7 @@ class Server extends Actor{
 object Server {
   case class Join(some: String)
   case object Start
+  case object sendList
   val players = new ObservableHashSet[ActorRef]
 }
 

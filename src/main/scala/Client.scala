@@ -1,5 +1,5 @@
 import Client._
-import Server.Join
+import Server.{Join, sendList}
 import akka.actor.{Actor, ActorRef}
 import scalafx.application.Platform
 import akka.pattern.ask
@@ -16,20 +16,15 @@ class Client extends Actor {
   context.system.eventStream.subscribe(self, classOf[akka.remote.DisassociatedEvent])
 
   def receive = {
-    case Joined(some: ObservableHashSet[ActorRef]) =>
-      println("Client Joined")
-
-      Platform.runLater {
-        game.showUser()
-      }
-      context.become(Joined)
-      println("--------------" + some)
-
     case SentJoin(ip, port, name, types) =>
       println("Client, ip: " + ip + ", port: " + port + ", status: " + name)
       //sent join to server
       val serverRef = context.actorSelection(s"akka.tcp://$name@$ip:$port/user/server")
       serverRef ! Join("NEWJOIN")
+
+    case Joined =>
+      println("Client Joined")
+      sender ! sendList
 
     case UpdateList(some) =>
       for (po <- some) {
@@ -43,7 +38,7 @@ class Client extends Actor {
     case _=>
   }
 
-  def Joined : Receive = {
+  def Ready : Receive = {
     case Begin(list) =>
       sender ! "Ready"
     case Draw(c) =>
@@ -59,7 +54,8 @@ class Client extends Actor {
 }
 object Client {
   var joinList: Option[Iterator[ActorRef]] = None
-  case class Joined(some: ActorRef)
+  case object Joined
+  case object Ready
   case class SentJoin(ip: String, port: String, status: String, types: String)
   //case class Joined(startHand: List[Card])
   case class Begin(clients: Iterable[ActorRef])
