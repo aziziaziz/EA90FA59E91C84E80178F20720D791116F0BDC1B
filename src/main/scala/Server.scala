@@ -19,7 +19,10 @@ class Server extends Actor{
       sender ! Joined
 
     case sendList =>
-      sender ! UpdateList(game.clients)
+      //sender ! UpdateList(game.clients)
+      for (temp <- game.clients) {
+        sender ! UpdateList(temp)
+      }
 
     case Start =>
       context.become(started)

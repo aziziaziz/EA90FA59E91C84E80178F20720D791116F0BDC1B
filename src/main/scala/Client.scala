@@ -27,9 +27,7 @@ class Client extends Actor {
       sender ! sendList
 
     case UpdateList(some) =>
-      for (po <- some) {
-        game.clients += po
-      }
+      game.clients += some
 
     case Play(some: ActorRef) =>
       println(some)
@@ -63,7 +61,7 @@ object Client {
   case object PassBall
   case object HostGame
   case class Draw(c : Card)
-  case class UpdateList(some: ObservableHashSet[ActorRef])
+  case class UpdateList(some: ActorRef)
   case object myTurn
   case object yourTurn
   case class Play(some: ActorRef)
