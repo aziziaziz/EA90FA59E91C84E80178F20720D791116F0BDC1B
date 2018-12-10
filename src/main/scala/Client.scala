@@ -1,10 +1,11 @@
-import Client.{HostGame, Joined, SentJoin}
+import Client.{HostGame, Joined, SentJoin, UpdateList}
 import Server.Join
 import akka.actor.{Actor, ActorRef}
 import scalafx.application.Platform
 import akka.pattern.ask
 import akka.remote.DisassociatedEvent
 import akka.util.Timeout
+import scalafx.collections.ObservableHashSet
 
 import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits._
@@ -15,21 +16,26 @@ class Client extends Actor {
   context.system.eventStream.subscribe(self, classOf[akka.remote.DisassociatedEvent])
 
   def receive = {
-    case Joined(some: String) =>
+    case Joined(some: ActorRef) =>
       println("Client Joined")
 
       Platform.runLater {
         //game.control.displayStatus(some + " Has Joined")
-        game.control.Statusu(some + " Has Joined")
+        //game.control.Statusu(some + " Has Joined")
         game.showUser()
       }
       context.become(standBy)
+      println("--------------" + some)
 
     case SentJoin(ip, port, name, types) =>
       println("Client, ip: " + ip + ", port: " + port + ", status: " + name)
       //sent join to server
       val serverRef = context.actorSelection(s"akka.tcp://$name@$ip:$port/user/server")
       serverRef ! Join("NEWJOIN")
+
+    case UpdateList(some) =>
+      println("==================" + some)
+      game.clients += some
 
     case _=>
   }
@@ -56,7 +62,7 @@ class Client extends Actor {
 }
 object Client {
   var joinList: Option[Iterator[ActorRef]] = None
-  case class Joined(some: String)
+  case class Joined(some: ActorRef)
   case class SentJoin(ip: String, port: String, status: String, types: String)
   //case class Joined(startHand: List[Card])
   case class Begin(clients: Iterable[ActorRef])
@@ -64,6 +70,7 @@ object Client {
   case object PassBall
   case object HostGame
   case class Draw(c : Card)
+  case class UpdateList(some: ActorRef)
   case object myTurn
   case object yourTurn
 }

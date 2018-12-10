@@ -1,4 +1,4 @@
-import Client.{Begin, Joined, yourTurn}
+import Client.{Begin, Joined, UpdateList, yourTurn}
 import Server.{Join, Start}
 import akka.actor.{Actor, ActorRef}
 import akka.pattern.ask
@@ -17,14 +17,19 @@ class Server extends Actor{
     case Join(some: String) =>
       println("Server Receive: " + some)
       game.clients += sender
+
+      //sender ! Joined(sender.toString())
+      for (tr <- game.clients) {
+        println("///////////////////" + tr + "////////////////")
+        sender ! Joined(tr)
+      }
+
       Platform.runLater {
         //game.control.displayStatus(some + " Has Joined")
         game.lobbyWindowControl.updateList()
       }
-
-      sender ! Joined("asdsadsadasd")
-
     case Start =>
+      /*
       context.become(started)
       for(x <- game.clients){
         var starthand = for (x <- (0 to 5)) yield {game.a.remove(0)}
@@ -36,7 +41,37 @@ class Server extends Actor{
     //choose order
     // sender ? yourTurn(Card)
       //
+     */
+      /*
+      context.become(started)
+      val feedbacks: Iterable[Future[Any]] = for (client <- MyPassBall.clients) yield {
+        client ? Begin(MyPassBall.clients.toList)
+      }
+      for(result <- feedbacks){
+        val mainFuture: Future[String] = Future {
+          for(reply <- result){
+            reply
+          }
+          "done"
+        }
+        mainFuture.foreach { x=>
+          if (!clientIterator.isDefined){
+            clientIterator = Option(Iterator.continually(MyPassBall.clients.toList).flatten )
+          }
+          for(iter <- clientIterator){
+            val client: Iterator[ActorRef] = iter.take(1)
+            var tclient: ActorRef = client.next()
 
+            val cresult = tclient ? Take
+            var result = Await.result(cresult, 10 second)
+            while(result != "Taken"){
+              tclient = client.next()
+              val cresult = tclient ? Take
+              result = Await.result(cresult, 10 second)
+            }
+          }
+        }
+      }*/
     case _=>
   }
   def started: Receive = {
