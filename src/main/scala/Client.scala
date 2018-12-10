@@ -23,13 +23,19 @@ class Client extends Actor {
         game.control.Statusu(some + " Has Joined")
         game.showUser()
       }
-      //context.become(joined)
+      context.become(standBy)
 
     case SentJoin(ip, port, name, types) =>
       println("Client, ip: " + ip + ", port: " + port + ", status: " + name)
       //sent join to server
       val serverRef = context.actorSelection(s"akka.tcp://$name@$ip:$port/user/server")
-      serverRef ! Join(types)
+      serverRef ! Join("NEWJOIN")
+
+    case _=>
+  }
+
+  def standBy : Receive = {
+
 
     case _=>
   }

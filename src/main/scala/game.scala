@@ -57,7 +57,7 @@ object game extends JFXApp{
     //create server actor
     server = system.actorOf(Props[Server], "server")
     //create client actor
-    client = system.actorOf(Props[Client], "DickWeed")
+    client = system.actorOf(Props[Client], name)
   }
 
   // Akka
@@ -164,11 +164,13 @@ object game extends JFXApp{
   var lobbyLoader: FXMLLoader =_
   var lobbyRoot: BorderPane =_
   var lobbyWindowControl: LobbyController#Controller =_
+  var typesS: String = ""
 
-  def enterLobby(): Unit = {
+  def enterLobby(types: String): Unit = {
     //Lobby - "Host" starts game when all players are in
     //lobbyWindow = getClass.getResourceAsStream("Lobby.fxml")
     //Lobby Loader
+    typesS = types
     lobbyLoader = new FXMLLoader(null, NoDependencyResolver)
     //Loads lobby window
     lobbyLoader.load(lobbyWindow)

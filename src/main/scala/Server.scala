@@ -16,17 +16,14 @@ class Server extends Actor{
   def receive = {
     case Join(some: String) =>
       println("Server Receive: " + some)
-      if (some.equals("CLIENT")) {
-        game.clients += sender
-        Platform.runLater {
-          //game.control.displayStatus(some + " Has Joined")
-          game.lobbyWindowControl.updateList()
-        }
-      } else {
-        game.hosts += sender
+      game.clients += sender
+      Platform.runLater {
+        //game.control.displayStatus(some + " Has Joined")
+        game.lobbyWindowControl.updateList()
       }
 
       sender ! Joined("asdsadsadasd")
+
     case Start =>
       context.become(started)
       for(x <- game.clients){

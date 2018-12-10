@@ -81,7 +81,8 @@ class MainWindowController(
     if (host_name.text.value != "") {
       if (!host_connection_list.getSelectionModel.isEmpty) {
         game.initializeConnect(host_name.text.value, host_connection_list.getSelectionModel.getSelectedItem)
-        game.enterLobby()
+        game.client ! SentJoin(host_connection_list.getSelectionModel.getSelectedItem.getHostAddress, AddressExtension.portOf(game.system).toString, host_name.text.value, "HOST")
+        game.enterLobby("HOST")
       } else {
         popUpAlert("Please select Host connection")
       }
@@ -110,6 +111,7 @@ class MainWindowController(
             try {
               game.initializeConnect(join_server_name.text.value, client_connection_list.getSelectionModel.getSelectedItem)
               game.client ! SentJoin(join_server_ip.text.value, join_server_port.text.value, join_server_name.text.value, "CLIENT")
+              game.enterLobby("CLIENT")
             } catch {
               case e:Exception => println(e)
               //popUpAlert("Unable to connect to server, please try again later")
