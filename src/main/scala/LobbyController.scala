@@ -1,3 +1,4 @@
+import Server.Start
 import akka.actor.ActorRef
 import scalafx.application.Platform
 import scalafx.collections.ObservableBuffer
@@ -39,6 +40,12 @@ class LobbyController(
     }
   })
 
+  def print(): Unit = {
+    for (ty <- game.clients) {
+      println(ty.toString())
+    }
+  }
+
   def updateList(): Unit = {
     game.clients.onChange((x, y) => {
       Platform.runLater {
@@ -53,6 +60,7 @@ class LobbyController(
   }
 
   def startGame(): Unit = {
-
+    game.server ! Start
+    game.newGame()
   }
 }

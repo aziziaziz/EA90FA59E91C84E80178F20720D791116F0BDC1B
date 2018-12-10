@@ -113,28 +113,14 @@ object game extends JFXApp{
 
   //Main Window View - For user to "Host" or "Join" a game
   val mainWindow = getClass.getResourceAsStream("MainWindow.fxml")
-  //Play Window - Game Stage
-  val testPlay = getClass.getResourceAsStream("PlayWindow.fxml")
-
   //Main Window Loader
   val mainWindowloader = new FXMLLoader(null, NoDependencyResolver)
-  //Play Window Loader
-  val testPlayLoader = new FXMLLoader(null, NoDependencyResolver)
-
   //Loads main window
   mainWindowloader.load(mainWindow)
-  //Loads play window
-  testPlayLoader.load(testPlay)
-
   //Get main window root
   var mainWindowRoot = mainWindowloader.getRoot[javafx.scene.layout.BorderPane]
-  //Get play window root
-  var playUI = testPlayLoader.getRoot[javafx.scene.layout.BorderPane]
-
   //Get main window controller
   val mainWindowControl = mainWindowloader.getController[MainWindowController#Controller]()
-  //Get play window controller
-  val testPlayControl = testPlayLoader.getController[PlayWindowController#Controller]()
 
   stage = new PrimaryStage(){
     scene = new Scene() {
@@ -181,6 +167,23 @@ object game extends JFXApp{
 
     stage.scene = new Scene() {
       root = lobbyRoot
+    }
+  }
+
+  def newGame(): Unit = {
+    //Play Window - Game Stage
+    val testPlay = getClass.getResourceAsStream("PlayWindow.fxml")
+    //Play Window Loader
+    val testPlayLoader = new FXMLLoader(null, NoDependencyResolver)
+    //Loads play window
+    testPlayLoader.load(testPlay)
+    //Get play window root
+    var playUI = testPlayLoader.getRoot[javafx.scene.layout.BorderPane]
+    //Get play window controller
+    val testPlayControl = testPlayLoader.getController[PlayWindowController#Controller]()
+
+    stage.scene = new Scene() {
+      root = playUI
     }
   }
 

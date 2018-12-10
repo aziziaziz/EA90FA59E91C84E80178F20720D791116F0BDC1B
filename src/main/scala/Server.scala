@@ -1,10 +1,10 @@
-import Client.{Begin, Joined, UpdateList, yourTurn}
+import Client._
 import Server.{Join, Start}
 import akka.actor.{Actor, ActorRef}
 import akka.pattern.ask
 import akka.util.Timeout
 import scalafx.application.Platform
-import scalafx.collections.ObservableBuffer
+import scalafx.collections.{ObservableBuffer, ObservableHashSet}
 
 import scala.concurrent.ExecutionContext.Implicits._
 import scala.concurrent.duration._
@@ -15,33 +15,37 @@ class Server extends Actor{
   var clientIterator: Option[Iterator[ActorRef]] = None
   def receive = {
     case Join(some: String) =>
-      println("Server Receive: " + some)
       game.clients += sender
+      //println("---------------------------Total number of clients: " + game.clients.size)
+      //Server.players += sender
 
-      //sender ! Joined(sender.toString())
-      for (tr <- game.clients) {
-        println("///////////////////" + tr + "////////////////")
-        sender ! Joined(tr)
-      }
-
+      //sender ! UpdateList(game.clients)
+      //sender ! Play("Sending from server")
+      /*
       Platform.runLater {
         //game.control.displayStatus(some + " Has Joined")
         game.lobbyWindowControl.updateList()
       }
+      */
+      for (l <- game.clients) {
+        sender ! Play(l)
+      }
+
     case Start =>
-      /*
       context.become(started)
+      println("Server Start")
+
+      for (tr <- game.clients) {
+        tr ! game.newGame()
+      }
+
       for(x <- game.clients){
-        var starthand = for (x <- (0 to 5)) yield {game.a.remove(0)}
+        var starthand = for (x <- (0 to 7)) yield {game.a.remove(0)}
         sender ! starthand.toList
       }
       var turn = 0
       var order = for (x <- game.clients) yield { turn = turn + 1
         (x, turn)}
-    //choose order
-    // sender ? yourTurn(Card)
-      //
-     */
       /*
       context.become(started)
       val feedbacks: Iterable[Future[Any]] = for (client <- MyPassBall.clients) yield {
@@ -71,7 +75,9 @@ class Server extends Actor{
             }
           }
         }
-      }*/
+      }
+      */
+
     case _=>
   }
   def started: Receive = {
@@ -82,5 +88,6 @@ class Server extends Actor{
 object Server {
   case class Join(some: String)
   case object Start
+  val players = new ObservableHashSet[ActorRef]
 }
 

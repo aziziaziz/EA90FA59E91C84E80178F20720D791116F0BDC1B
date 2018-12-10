@@ -58,8 +58,11 @@ class PlayWindowController (
   def init(): Unit = {
     player1_scroll.setStyle("-fx-focus-color: transparent; -fx-background-color:transparent;")
     addDummy()
-
-    for(i <- 1 to 10) {
+    var tempDiscard: String = getRandomCard()
+    println(s"cards/$tempDiscard.png")
+    discard_pile_image.image = new Image(s"cards/$tempDiscard.png")
+    /*
+    for(i <- 1 to 7) {
       val ran = Random.nextInt(10)
       val c = Array("b", "g", "r", "y")
       val d = Random.nextInt(4)
@@ -104,10 +107,19 @@ class PlayWindowController (
       player1_play_area_card_flow.getChildren.add(cardGroup)
       tert.text = player3_play_area_card_flow.getChildren.size().toString
     }
-    limitCards()
+    limitCards()*/
   }
 
   init()
+
+  def getRandomCard(): String = {
+    val ran = Random.nextInt(10)
+    val c = Array("b", "g", "r", "y")
+    val d = Random.nextInt(4)
+    val e = c(d)
+
+    e + ran
+  }
 
   def victoryCondition(): Unit = {
 
@@ -226,7 +238,7 @@ class PlayWindowController (
   }
 
   def addDummy(): Unit = {
-    for(i <- 1 to 10) {
+    for(i <- 1 to 7) {
       var temp = new Group()
       var tempP: Pane = new Pane {
         prefHeight = 120.0
@@ -251,7 +263,7 @@ class PlayWindowController (
       player2_play_area_card_flow.getChildren.add(temp)
     }
 
-    for(i <- 1 to 10) {
+    for(i <- 1 to 7) {
       var temp = new Group()
       var tempP: Pane = new Pane {
         prefHeight = 120.0
@@ -275,7 +287,7 @@ class PlayWindowController (
       player3_play_area_card_flow.getChildren.add(temp)
     }
 
-    for(i <- 1 to 10) {
+    for(i <- 1 to 7) {
       var temp = new Group()
       var tempP: Pane = new Pane {
         prefHeight = 120.0

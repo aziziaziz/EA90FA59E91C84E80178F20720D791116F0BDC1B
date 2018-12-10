@@ -1,4 +1,4 @@
-import Client.{HostGame, Joined, SentJoin, UpdateList}
+import Client._
 import Server.Join
 import akka.actor.{Actor, ActorRef}
 import scalafx.application.Platform
@@ -16,15 +16,13 @@ class Client extends Actor {
   context.system.eventStream.subscribe(self, classOf[akka.remote.DisassociatedEvent])
 
   def receive = {
-    case Joined(some: ActorRef) =>
+    case Joined(some: ObservableHashSet[ActorRef]) =>
       println("Client Joined")
 
       Platform.runLater {
-        //game.control.displayStatus(some + " Has Joined")
-        //game.control.Statusu(some + " Has Joined")
         game.showUser()
       }
-      context.become(standBy)
+      context.become(Joined)
       println("--------------" + some)
 
     case SentJoin(ip, port, name, types) =>
@@ -34,31 +32,30 @@ class Client extends Actor {
       serverRef ! Join("NEWJOIN")
 
     case UpdateList(some) =>
-      println("==================" + some)
+      for (po <- some) {
+        game.clients += po
+      }
+
+    case Play(some: ActorRef) =>
+      println(some)
       game.clients += some
 
     case _=>
   }
 
-  def standBy : Receive = {
-
-
-    case _=>
-  }
-  /*
-  def joined : Receive = {
+  def Joined : Receive = {
     case Begin(list) =>
       sender ! "Ready"
     case Draw(c) =>
+      /*
       Platform.runLater{
         hand += c
       }
-      sender ! "Drawn"
+      sender ! "Drawn"*/
     case myTurn=>
 
     case _=>
   }
-  */
 }
 object Client {
   var joinList: Option[Iterator[ActorRef]] = None
@@ -70,8 +67,10 @@ object Client {
   case object PassBall
   case object HostGame
   case class Draw(c : Card)
-  case class UpdateList(some: ActorRef)
+  case class UpdateList(some: ObservableHashSet[ActorRef])
   case object myTurn
   case object yourTurn
+  case class Play(some: ActorRef)
+
 }
 
