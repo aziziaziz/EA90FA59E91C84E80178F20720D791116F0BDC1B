@@ -39,7 +39,7 @@ class LobbyController(
     println(game.serverRef)
     game.serverRef ! StartP
     //game.serverRef ! Start
-    game.clientRef ! StartGame
+//    game.clientRef ! StartGame
     //println(game.serverRef.toString())
   }
 }
