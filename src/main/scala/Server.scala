@@ -1,5 +1,5 @@
 import Client._
-import Server.{BroadcastPlayers, Join, StartP}
+import Server.{BroadcastPlayers, Join, SendList, StartP}
 import akka.actor.{Actor, ActorRef}
 import akka.pattern.ask
 import akka.util.Timeout
@@ -27,14 +27,15 @@ class Server extends Actor{
         p.ref ! AcceptPlayers(allPersons)
       }
 
-    case sendList =>
+    case SendList =>
       for (temp <- game.clients) {
         sender ! UpdateList(temp)
       }
 
     case StartP =>
-      println("Server Start")
-
+      for (client <- Server.players) {
+        client.ref ! StartGame
+      }
       //context.become(started)
     case _=>
   }
@@ -54,7 +55,7 @@ object Server {
   case class Join(myref: ActorRef, name: String)
   case object BroadcastPlayers
   case object StartP
-  case object sendList
+  case object SendList
   val players = new ObservableHashSet[Person]
 }
 
