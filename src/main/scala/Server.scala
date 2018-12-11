@@ -27,7 +27,6 @@ class Server extends Actor{
         p.ref ! AcceptPlayers(allPersons)
       }
 
-
     case sendList =>
       for (temp <- game.clients) {
         sender ! UpdateList(temp)
@@ -35,10 +34,6 @@ class Server extends Actor{
 
     case StartP =>
       println("Server Start")
-//      for (p <- Server.players) {
-//        println("P print")
-//        p.ref ! Readyss
-//      }
 
       //context.become(started)
     case _=>

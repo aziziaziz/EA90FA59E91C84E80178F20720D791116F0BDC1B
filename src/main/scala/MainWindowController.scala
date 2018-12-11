@@ -26,15 +26,17 @@ class MainWindowController(
                           ) {
   var clientActorRef: Option[ActorRef] = None
 
+  // used to initialize the main window view with uno images and stuff
   def init(): Unit = {
     val image = new Image("images/uno.png")
     image_banner.image = image
-
+    // this is where the user can select the connection available, recall var tr from game class
     connect.setItems(game.tr)
   }
 
   init()
 
+  // method is run when user clicks on connect
   def connectS(): Unit = {
     if (!connect.getSelectionModel.isEmpty) {
       game.initConnect(connect.getSelectionModel.getSelectedItem)
@@ -49,6 +51,7 @@ class MainWindowController(
     }
   }
 
+  // this is run when user click on join game button, after that user is directed to lobby
   def connectGame(): Unit = {
     clientActorRef foreach { ref =>
       ref ! StartJoin(join_server_ip.text.value, join_server_port.text.value, join_server_name.text.value)

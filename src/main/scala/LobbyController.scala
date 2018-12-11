@@ -23,6 +23,7 @@ class LobbyController(
 
   init()
 
+  // use to update the lobby list
   def showPlayers(allNames: List[Person]): Unit = {
     println("-------------------addedPlayers-------------------------")
     val users: ObservableBuffer[String] = new ObservableBuffer[String]()
@@ -32,6 +33,7 @@ class LobbyController(
     }
   }
 
+  // start implementing here, direct user to PlayWindow and start coding the game logic
   def startGame(): Unit = {
     println("Start Gameeeeeeeeeee")
     println(game.serverRef)

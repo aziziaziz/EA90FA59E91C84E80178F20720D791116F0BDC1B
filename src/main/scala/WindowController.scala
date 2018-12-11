@@ -39,7 +39,7 @@ class WindowController(
 
 
   }
-
+  /*
   def hideBall(): Unit ={
     ball.visible = false
     btnPass.disable = true
@@ -68,4 +68,5 @@ class WindowController(
   def Statusu(data: String) = {
     status.text = data
   }
+  */
 }

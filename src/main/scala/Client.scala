@@ -16,14 +16,17 @@ class Client extends Actor {
   context.system.eventStream.subscribe(self, classOf[akka.remote.DisassociatedEvent])
   var allPlayers = List.empty[Person]
   var serverRef: ActorSelection =_
+  var serverActro: ActorRef =_
 
   def receive = {
+    // request to join to server
     case StartJoin(server, port, name)=>
       serverRef = context.actorSelection(s"akka.tcp://uno@$server:$port/user/server")
       println(serverRef + "===================")
       val result  = serverRef ? Join(self, name)
       result.foreach( x => {
         if (x == Client.Joined){
+          // ask server to get all the list of players so that can update in the lobby UI
           serverRef ! BroadcastPlayers
           context.become(joined)
           Platform.runLater(() => {
@@ -41,9 +44,6 @@ class Client extends Actor {
   }
 
   def joined: Receive = {
-    case StartGamePrint =>
-      println("GAME STARTED")
-
     case AcceptPlayers(players) =>
       allPlayers = players
       println(allPlayers.size + " PLAYER SIZE IN CLIENT")

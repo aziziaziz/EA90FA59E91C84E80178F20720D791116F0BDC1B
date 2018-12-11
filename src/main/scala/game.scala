@@ -15,6 +15,7 @@ import scalafx.scene.control.Alert.AlertType
 import scalafx.scene.layout.BorderPane
 
 object game extends JFXApp{
+  // Address code - use to find the list of connections available for the user PC, to supply value for the connection combo box
   var count = -1
   var selection: Int = 0
 
@@ -24,23 +25,22 @@ object game extends JFXApp{
     (count -> add)
   }).toMap
 
-  // Akka
+  // This is the variable that stores all the connection for the user pc, var tr
   var tr: ObservableBuffer[InetAddress] = (for (inf <- NetworkInterface.getNetworkInterfaces.asScala;
                                                 add <- inf.getInetAddresses.asScala) yield {
     add
   }).to
+  // Address code - end
 
+  // Establish con - Used to establish connection based on user selected connection combo box value
   var system: ActorSystem =_
   var serverRef: ActorRef =_
   var clientRef: ActorRef =_
   var ipaddress: InetAddress =_
 
+  // this is run when user click connect button
   def initConnect(some: InetAddress): Unit = {
     ipaddress = some
-    //  for ((i, add) <- addresses) {
-    //    println(s"$i = $add")
-    //  }
-    //println("please select which interface to bind")
     val overrideConf = ConfigFactory.parseString(
       s"""
          |akka {
@@ -66,12 +66,17 @@ object game extends JFXApp{
      """.stripMargin)
 
     val myConf = overrideConf.withFallback(ConfigFactory.load())
+
+    // create system with uno name
     system = ActorSystem("uno", myConf)
     //create server actor
     serverRef = system.actorOf(Props[Server](), "server")
     //create client actor
     clientRef = system.actorOf(Props[Client], "client")
 
+    // Establish con - end
+
+    // this is to store created client in the WindowController
     mainWindowControl.clientActorRef = Option(clientRef)
   }
 
@@ -86,6 +91,7 @@ object game extends JFXApp{
   //Get main window controller
   val mainWindowControl = mainWindowloader.getController[MainWindowController#Controller]()
 
+  // Load Primary Scene - Load the first scene
   stage = new PrimaryStage(){
     scene = new Scene() {
       root = mainWindowRoot
@@ -101,6 +107,8 @@ object game extends JFXApp{
     }
   }
 
+  // Load Primary Scene - end
+
   def createAlert(k: String): Unit = {
     new Alert(AlertType.Error) {
       initOwner(stage)
@@ -110,14 +118,14 @@ object game extends JFXApp{
     }.showAndWait()
   }
 
+  // Load Lobby - used to load lobby when user entered their username, host IP and Host Port
   var lobbyWindow = getClass.getResourceAsStream("Lobby.fxml")
   var lobbyLoader: FXMLLoader =_
   var lobbyRoot: BorderPane =_
   var lobbyWindowControl: LobbyController#Controller =_
   var typesS: String = ""
-
+  // this is run when user clicks on join game
   def enterLobby(types: String): Unit = {
-    //Lobby - "Host" starts game when all players are in
     //lobbyWindow = getClass.getResourceAsStream("Lobby.fxml")
     //Lobby Loader
     typesS = types
@@ -134,6 +142,9 @@ object game extends JFXApp{
     }
   }
 
+  // load lobby - end
+
+  // Load play scene - this is the code to load play scene
   def newGame(): Unit = {
     //Play Window - Game Stage
     val testPlay = getClass.getResourceAsStream("PlayWindow.fxml")
@@ -149,13 +160,6 @@ object game extends JFXApp{
     stage.scene = new Scene() {
       root = playUI
     }
-  }
-
-  def showUser(): Unit = {
-    println("HOST")
-    hosts.foreach(x=>println(x.toString()))
-    println("\nCLIENT")
-    clients.foreach(x=>println(x.toString()))
   }
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////
