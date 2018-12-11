@@ -1,3 +1,4 @@
+
 import Server.Start
 import akka.actor.ActorRef
 import scalafx.application.Platform
@@ -11,56 +12,27 @@ class LobbyController(
                      host_info_panel: HBox,
                      host_ip: Label,
                      host_port: Label,
-                     user_list: ListView[ActorRef],
+                     user_list: ListView[String],
                      lobby_start: Button
                      ) {
   def init(): Unit = {
     host_ip.text = game.ipaddress.getHostAddress
     host_port.text = AddressExtension.portOf(game.system).toString
-    println()
-
-    if (game.typesS != "HOST") {
-      host_info_panel.disable = true
-      host_info_panel.visible = false
-      lobby_start.disable = true
-      lobby_start.visible = false
-    }
   }
 
   init()
 
-  game.clients.onChange((x, y) => {
+  def showPlayers(allNames: List[Person]): Unit = {
+    println("-------------------addedPlayers-------------------------")
+    val users: ObservableBuffer[String] = new ObservableBuffer[String]()
+    for (a <- allNames) users.+=(a.name)
     Platform.runLater {
-      //user_list.items = new ObservableBuffer() ++= x.toList
-      println("-----------------------------------------")
-      //game.clients.foreach(temp => {temp.path.name})
-      user_list.items = new ObservableBuffer() ++= x.toList
-      println(game.clients.foreach(temp => {temp.path.name.toString}))
-      println("-----------------------------------------")
+      user_list.items = users
     }
-  })
-
-  def print(): Unit = {
-    for (ty <- game.clients) {
-      println(ty.toString())
-    }
-  }
-
-  def updateList(): Unit = {
-    game.clients.onChange((x, y) => {
-      Platform.runLater {
-        //user_list.items = new ObservableBuffer() ++= x.toList
-        println("-----------------------------------------")
-        //game.clients.foreach(temp => {temp.path.name})
-        user_list.items = new ObservableBuffer() ++= x.toList
-        println(game.clients.foreach(temp => {temp.path.name.toString}))
-        println("-----------------------------------------")
-      }
-    })
   }
 
   def startGame(): Unit = {
-    game.server ! Start
-    game.newGame()
+    println("Start Gameeeeeeeeeee")
+    game.serverRef ! Start
   }
 }

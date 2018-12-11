@@ -1,5 +1,3 @@
-import Client.{ SentJoin}
-import Server.Start
 import akka.actor.ActorRef
 import scalafx.application.Platform
 import scalafx.collections.ObservableBuffer
@@ -53,7 +51,7 @@ class WindowController(
 
   def handleJoin(action: ActionEvent): Unit ={
     //reference to client ref
-    game.client ! SentJoin(server.text.value, port.text.value, "", "")
+    //game.client ! SentJoin(server.text.value, port.text.value, "", "")
   }
 
   def handlePass(action: ActionEvent): Unit ={
@@ -61,7 +59,7 @@ class WindowController(
   }
 
   def handleStart(action: ActionEvent): Unit ={
-    game.server ! Start
+    //game.server ! Start
   }
   def displayStatus(data: String): Unit = {
     status.text = data

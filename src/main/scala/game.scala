@@ -15,19 +15,33 @@ import scalafx.scene.control.Alert.AlertType
 import scalafx.scene.layout.BorderPane
 
 object game extends JFXApp{
-  var addresses: Map[Int, InetAddress] =_
-  var ipaddress: InetAddress =_
-  var myConf: Config =_
-  var overrideConf: Config =_
+  var count = -1
+  var selection: Int = 0
+
+  val addresses = (for (inf <- NetworkInterface.getNetworkInterfaces.asScala;
+                        add <- inf.getInetAddresses.asScala) yield {
+    count = count + 1
+    (count -> add)
+  }).toMap
+
+  // Akka
+  var tr: ObservableBuffer[InetAddress] = (for (inf <- NetworkInterface.getNetworkInterfaces.asScala;
+                                                add <- inf.getInetAddresses.asScala) yield {
+    add
+  }).to
+
   var system: ActorSystem =_
-  var tr: ObservableBuffer[InetAddress] =_
-  var server: ActorRef =_
-  var client: ActorRef =_
+  var serverRef: ActorRef =_
+  var clientRef: ActorRef =_
+  var ipaddress: InetAddress =_
 
-  def initializeConnect(name: String, ip: InetAddress): Unit = {
-    ipaddress = ip
-
-    overrideConf = ConfigFactory.parseString(
+  def initConnect(some: InetAddress): Unit = {
+    ipaddress = some
+    //  for ((i, add) <- addresses) {
+    //    println(s"$i = $add")
+    //  }
+    //println("please select which interface to bind")
+    val overrideConf = ConfigFactory.parseString(
       s"""
          |akka {
          |  loglevel = "INFO"
@@ -51,65 +65,15 @@ object game extends JFXApp{
          |
      """.stripMargin)
 
-    myConf = overrideConf.withFallback(ConfigFactory.load())
-    system = ActorSystem(name, myConf)
-
+    val myConf = overrideConf.withFallback(ConfigFactory.load())
+    system = ActorSystem("uno", myConf)
     //create server actor
-    server = system.actorOf(Props[Server], "server")
+    serverRef = system.actorOf(Props[Server](), "server")
     //create client actor
-    client = system.actorOf(Props[Client], name)
+    clientRef = system.actorOf(Props[Client], "client")
+
+    mainWindowControl.clientActorRef = Option(clientRef)
   }
-
-  // Akka
-  tr = (for (inf <- NetworkInterface.getNetworkInterfaces.asScala;
-       add <- inf.getInetAddresses.asScala) yield {
-    add
-  }).to
-
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-  var a = new ObservableBuffer[Card]
-  for (x <- (0 to 108)){
-    a.add(new Card('x','t'))
-  }
-
-  val clients = new ObservableHashSet[ActorRef]()
-  val hosts = new ObservableHashSet[ActorRef]()
-
-  //deck creation
-  var deck = new ObservableBuffer[String]()
-  var colour = Array("b", "g", "r", "y")
-  for (i <- Range(0, 2)){
-    for(j <- colour){
-      for(k <- Range(1,10))
-        deck += j.toString + k.toString
-    }
-    for(j <- colour){
-      deck += j.toString + "s"
-      deck += j.toString + "r"
-      deck += j.toString + "+"
-    }
-  }
-
-  for(i <- colour){
-    deck += i.toString + "0"
-  }
-
-  for(i <- Range(0, 4)){
-    deck += "4+"
-    deck += "cc"
-  }
-
-  //Dr Chin's Pass Ball View
-  val windows2 = getClass.getResourceAsStream("Window.fxml")
-  //Dr Chin's PassBall Loader
-  val loader2 = new FXMLLoader(null, NoDependencyResolver)
-  //Dr Chin's loader
-  loader2.load(windows2)
-  //Dr Chin's getRoot
-  var ui2 = loader2.getRoot[javafx.scene.layout.BorderPane]
-  //Dr Chin's get controller
-  val control = loader2.getController[WindowController#Controller]()
 
   //Main Window View - For user to "Host" or "Join" a game
   val mainWindow = getClass.getResourceAsStream("MainWindow.fxml")
@@ -192,5 +156,39 @@ object game extends JFXApp{
     hosts.foreach(x=>println(x.toString()))
     println("\nCLIENT")
     clients.foreach(x=>println(x.toString()))
+  }
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  var a = new ObservableBuffer[Card]
+  for (x <- (0 to 108)){
+    a.add(new Card('x','t'))
+  }
+
+  val clients = new ObservableHashSet[ActorRef]()
+  val hosts = new ObservableHashSet[ActorRef]()
+
+  //deck creation
+  var deck = new ObservableBuffer[String]()
+  var colour = Array("b", "g", "r", "y")
+  for (i <- Range(0, 2)){
+    for(j <- colour){
+      for(k <- Range(1,10))
+        deck += j.toString + k.toString
+    }
+    for(j <- colour){
+      deck += j.toString + "s"
+      deck += j.toString + "r"
+      deck += j.toString + "+"
+    }
+  }
+
+  for(i <- colour){
+    deck += i.toString + "0"
+  }
+
+  for(i <- Range(0, 4)){
+    deck += "4+"
+    deck += "cc"
   }
 }
