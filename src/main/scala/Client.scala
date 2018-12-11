@@ -1,5 +1,5 @@
 import Client._
-import Server.{BroadcastPlayers, Join, sendList}
+import Server.{BroadcastPlayers, Join, StartP}
 import akka.actor.{Actor, ActorRef, ActorSelection}
 import scalafx.application.Platform
 import akka.pattern.ask
@@ -20,6 +20,7 @@ class Client extends Actor {
   def receive = {
     case StartJoin(server, port, name)=>
       serverRef = context.actorSelection(s"akka.tcp://uno@$server:$port/user/server")
+      println(serverRef + "===================")
       val result  = serverRef ? Join(self, name)
       result.foreach( x => {
         if (x == Client.Joined){
@@ -52,12 +53,14 @@ class Client extends Actor {
 
     case StartGame =>
       println("Client Started")
+      println(serverRef)
+      serverRef ! StartP
       context.become(GameStart)
   }
 
   def GameStart: Receive = {
     case Readyss =>
-      println("Client Started")
+      println("Client Started -----------------------")
     case _=>
   }
 

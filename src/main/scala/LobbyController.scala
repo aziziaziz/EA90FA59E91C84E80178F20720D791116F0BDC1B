@@ -1,5 +1,6 @@
 
-import Server.Start
+import Client.StartGame
+import Server.StartP
 import akka.actor.ActorRef
 import scalafx.application.Platform
 import scalafx.collections.ObservableBuffer
@@ -33,6 +34,10 @@ class LobbyController(
 
   def startGame(): Unit = {
     println("Start Gameeeeeeeeeee")
-    game.serverRef ! Start
+    println(game.serverRef)
+    game.serverRef ! StartP
+    //game.serverRef ! Start
+    game.clientRef ! StartGame
+    //println(game.serverRef.toString())
   }
 }

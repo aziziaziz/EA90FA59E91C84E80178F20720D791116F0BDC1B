@@ -1,5 +1,5 @@
 import Client._
-import Server.{BroadcastPlayers, Join, Start}
+import Server.{BroadcastPlayers, Join, StartP}
 import akka.actor.{Actor, ActorRef}
 import akka.pattern.ask
 import akka.util.Timeout
@@ -33,54 +33,14 @@ class Server extends Actor{
         sender ! UpdateList(temp)
       }
 
-    case Start =>
+    case StartP =>
       println("Server Start")
-      for (p <- Server.players) {
-        println("P print")
-        p.ref ! StartGame
-      }
-
-      context.become(started)
-
-//      for(x <- game.clients){
-//        var starthand = for (x <- (0 to 7)) yield {game.a.remove(0)}
-//        sender ! starthand.toList
+//      for (p <- Server.players) {
+//        println("P print")
+//        p.ref ! Readyss
 //      }
-//      var turn = 0
-//      var order = for (x <- game.clients) yield { turn = turn + 1
-//        (x, turn)}
-      /*
-      context.become(started)
-      val feedbacks: Iterable[Future[Any]] = for (client <- MyPassBall.clients) yield {
-        client ? Begin(MyPassBall.clients.toList)
-      }
-      for(result <- feedbacks){
-        val mainFuture: Future[String] = Future {
-          for(reply <- result){
-            reply
-          }
-          "done"
-        }
-        mainFuture.foreach { x=>
-          if (!clientIterator.isDefined){
-            clientIterator = Option(Iterator.continually(MyPassBall.clients.toList).flatten )
-          }
-          for(iter <- clientIterator){
-            val client: Iterator[ActorRef] = iter.take(1)
-            var tclient: ActorRef = client.next()
 
-            val cresult = tclient ? Take
-            var result = Await.result(cresult, 10 second)
-            while(result != "Taken"){
-              tclient = client.next()
-              val cresult = tclient ? Take
-              result = Await.result(cresult, 10 second)
-            }
-          }
-        }
-      }
-      */
-
+      //context.become(started)
     case _=>
   }
   def started: Receive = {
@@ -98,7 +58,7 @@ case class Person(ref: ActorRef, name: String){
 object Server {
   case class Join(myref: ActorRef, name: String)
   case object BroadcastPlayers
-  case object Start
+  case object StartP
   case object sendList
   val players = new ObservableHashSet[Person]
 }
