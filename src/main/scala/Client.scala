@@ -52,9 +52,7 @@ class Client extends Actor {
       }
 
     case StartGame =>
-      println("Client Started")
-      println(serverRef)
-      serverRef ! StartP
+      println("Client Started") //YOU WILL SEE THIS LINE PRINT ON EVERY PLAYERS CONSOLE
       context.become(GameStart)
   }
 
