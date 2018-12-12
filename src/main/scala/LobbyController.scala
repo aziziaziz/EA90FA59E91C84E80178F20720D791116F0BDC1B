@@ -35,11 +35,6 @@ class LobbyController(
 
   // start implementing here, direct user to PlayWindow and start coding the game logic
   def startGame(): Unit = {
-    println("Start Gameeeeeeeeeee")
-    println(game.serverRef)
     game.serverRef ! StartP
-    //game.serverRef ! Start
-//    game.clientRef ! StartGame
-    //println(game.serverRef.toString())
   }
 }
