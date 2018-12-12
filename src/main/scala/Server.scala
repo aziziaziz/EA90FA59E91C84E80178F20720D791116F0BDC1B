@@ -36,7 +36,7 @@ class Server extends Actor{
       for (client <- Server.players) {
         client.ref ! StartGame
       }
-      //context.become(started)
+      context.become(started)
     case _=>
   }
   def started: Receive = {
